@@ -1,0 +1,5 @@
+# v5 - 30 Apr 2015
+
+* Graceful shutdown
+* Do not repeat configuration on restart
+* Email for alerts
