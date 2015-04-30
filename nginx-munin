@@ -1,0 +1,16 @@
+server {
+  listen 80 default_server;
+  server_name munin;
+  access_log /var/log/nginx/munin-access.log;
+  error_log /var/log/nginx/munin-server.log;
+
+  location /munin {
+    root /var/cache/munin/www;
+  }
+
+  location / {
+    auth_basic "Munin Server";
+    auth_basic_user_file "/etc/munin/htpasswd.users";
+    root "/var/cache/munin/www";
+  }
+}
