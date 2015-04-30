@@ -1,6 +1,6 @@
 FROM ubuntu:14.04
 
-MAINTAINER Leo Unbekandt <leo.unbekandt@appsdeck.eu>
+MAINTAINER Leo Unbekandt <leo@scalingo.com>
 
 RUN adduser --system --home /var/lib/munin --shell /bin/false --uid 1103 --group munin
 
