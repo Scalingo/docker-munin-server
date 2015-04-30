@@ -33,7 +33,7 @@ Container is listening on the port 8080
 
 For a bit of persistency
 
-/var/log/munin   -> logs
-/var/lib/munin   -> db
-/var/run/munin   -> lock and pid files
-/var/cache/munin -> file deserved by HTTP
+* /var/log/munin   -> logs
+* /var/lib/munin   -> db
+* /var/run/munin   -> lock and pid files
+* /var/cache/munin -> file deserved by HTTP
