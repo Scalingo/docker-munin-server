@@ -20,5 +20,4 @@ ADD ./munin-update-logging.patch /usr/share/munin
 RUN cd /usr/share/munin && patch munin-graph < munin-graph-logging.patch && patch munin-update < munin-update-logging.patch
 
 EXPOSE 8080
-CMD bash /munin
-
+CMD ["bash", "/munin"]

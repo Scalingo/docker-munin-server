@@ -88,14 +88,16 @@ fi
 /usr/sbin/munin-node
 echo "Using the following munin nodes:"
 echo $NODES
-# start apache
+# start nginx
 /usr/sbin/nginx
 # show logs
 echo "Tailing /var/log/syslog..."
 tail -F /var/log/syslog /var/log/munin/munin-update.log & pid=$!
+echo "tail -F running in $pid"
 
 sleep 1
 
-trap "kill $pid $(cat /var/run/munin/munin-node.pid) $(cat /var/run/nginx.pid) $(cat /var/run/crond.pid) $(cat /var/run/rsyslogd.pid)" TERM QUIT INT
+trap "echo 'stopping processes' ; kill $pid $(cat /var/run/munin/munin-node.pid) $(cat /var/run/nginx.pid) $(cat /var/run/crond.pid) $(cat /var/run/rsyslogd.pid)" SIGTERM SIGINT
 
+echo "Waiting for signal SIGINT/SIGTERM"
 wait
