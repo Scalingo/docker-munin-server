@@ -1,5 +1,6 @@
 #!/bin/bash
 NODES=${NODES:-}
+SNMP_NODES=${SNMP_NODES:-}
 MUNIN_USER=${MUNIN_USER:-user}
 MUNIN_PASSWORD=${MUNIN_PASSWORD:-password}
 
@@ -27,11 +28,36 @@ for NODE in $NODES
 do
   NAME=`echo $NODE | cut -d ":" -f1`
   HOST=`echo $NODE | cut -d ":" -f2`
+  PORT=`echo $NODE | cut -d ":" -f3`
+  if [ ${#PORT} -eq 0 ]; then
+      PORT=4949
+  fi
   if ! grep -q $HOST /etc/munin/munin.conf ; then
     cat << EOF >> /etc/munin/munin.conf
 [$NAME]
     address $HOST
     use_node_name yes
+    port $PORT
+
+EOF
+    fi
+done
+
+# generate node list
+for NODE in $SNMP_NODES
+do
+  NAME=`echo $NODE | cut -d ":" -f1`
+  HOST=`echo $NODE | cut -d ":" -f2`
+  PORT=`echo $NODE | cut -d ":" -f3`
+  if [ ${#PORT} -eq 0 ]; then
+      PORT=4949
+  fi
+  if ! grep -q $HOST /etc/munin/munin.conf ; then
+    cat << EOF >> /etc/munin/munin.conf
+[$NAME]
+    address $HOST
+    use_node_name no
+    port $PORT
 
 EOF
     fi
