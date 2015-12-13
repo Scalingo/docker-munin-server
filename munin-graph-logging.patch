@@ -1,0 +1,10 @@
+--- /usr/share/munin/munin-graph	2015-11-28 00:45:25.274878597 +0100
++++ /usr/share/munin/munin-graph	2015-11-28 00:45:44.622466044 +0100
+@@ -73,6 +73,7 @@
+ 
+ logger_open($config->{'logdir'});
+ logger_debug() if $config->{debug} or defined($ENV{CGI_DEBUG});
++logger_level("warn");
+ 
+ if (! graph_check_cron() ) {
+ 	# Should not be launched from cron.

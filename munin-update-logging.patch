@@ -1,0 +1,10 @@
+--- /usr/share/munin/munin-update	2015-11-28 00:44:27.175435050 +0100
++++ /usr/share/munin/munin-update	2015-11-28 00:44:57.313544402 +0100
+@@ -34,6 +34,7 @@
+ 
+     logger_open($config->{'logdir'});
+     logger_debug() if $config->{debug};
++    logger_level("warn");
+ 
+     my $update = Munin::Master::Update->new();
+     $update->run();
