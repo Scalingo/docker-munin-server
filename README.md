@@ -50,6 +50,7 @@ For a bit of persistency
 ## How to use the image
 
 ```
+docker build -t munin-server .
 docker run -d \
   -p 8080:8080 \
   -v /var/log/munin:/var/log/munin \
@@ -65,8 +66,15 @@ docker run -d \
   -e ALERT_RECIPIENT=monitoring@example.com \
   -e ALERT_SENDER=alerts@example.com \
   -e NODES="server1:10.0.0.1 server2:10.0.0.2" \
-  -e SNMP_NODES="router1:10.0.0.254:9999"
+  -e SNMP_NODES="router1:10.0.0.254:9999" \
   munin-server
 ```
 
-You can now reach your munin-server on port 8080 of your host.
+You can now reach your munin-server on port 8080 of your host. It will display at the first run:
+
+```
+Munin has not run yet. Please try again in a few moments.
+```
+
+Every 5 minutes munin-server will interrogate its nodes and build the graphs and store the data.
+That's only after the first data fetching operation that the first graphs will appear.
