@@ -3,15 +3,23 @@ NODES=${NODES:-}
 SNMP_NODES=${SNMP_NODES:-}
 MUNIN_USER=${MUNIN_USER:-user}
 MUNIN_PASSWORD=${MUNIN_PASSWORD:-password}
+MAIL_CONF_PATH='/var/lib/munin/.mailrc'
 
-if [ -n "${SMTP_USERNAME}" -a -n "${SMTP_PASSWORD}" -a -n "${SMTP_HOST}" -a -n "${SMTP_PORT}" ] ; then
-  cat > /var/lib/munin/.mailrc <<EOF
-  set smtp-use-starttls
-  set ssl-verify=ignore
-  set smtp=smtp://${SMTP_HOST}:${SMTP_PORT}
-  set smtp-auth=login
-  set smtp-auth-user=${SMTP_USERNAME}
-  set smtp-auth-password=${SMTP_PASSWORD}
+truncate -s 0 "${MAIL_CONF_PATH}"
+
+if [ -n "${SMTP_HOST}" -a -n "${SMTP_PORT}" ] ; then
+  cat >> "${MAIL_CONF_PATH}" <<EOF
+set smtp-use-starttls
+set ssl-verify=ignore
+set smtp=smtp://${SMTP_HOST}:${SMTP_PORT}
+EOF
+fi
+
+if [ -n "${SMTP_USERNAME}" -a -n "${SMTP_PASSWORD}" ] ; then
+  cat >> "${MAIL_CONF_PATH}" <<EOF
+set smtp-auth=login
+set smtp-auth-user=${SMTP_USERNAME}
+set smtp-auth-password=${SMTP_PASSWORD}
 EOF
 fi
 
