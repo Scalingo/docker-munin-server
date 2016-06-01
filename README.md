@@ -21,6 +21,7 @@ Email credentials used to send emails (like alerts)
 * `SMTP_PASSWORD`
 * `SMTP_USE_TLS`
 * `SMTP_ALWAYS_SEND`
+* `SMTP_MESSAGE`
 
 ### Alert target
 
