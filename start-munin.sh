@@ -6,6 +6,8 @@ MUNIN_PASSWORD=${MUNIN_PASSWORD:-password}
 MAIL_CONF_PATH='/var/lib/munin/.mailrc'
 SMTP_USE_TLS=${SMTP_USE_TLS:-false}
 SMTP_ALWAYS_SEND=${SMTP_ALWAYS_SEND:-true}
+SMTP_MESSAGE_DEFAULT='[${var:group};${var:host}] -> ${var:graph_title} -> warnings: ${loop<,>:wfields  ${var:label}=${var:value}} / criticals: ${loop<,>:cfields  ${var:label}=${var:value}}'
+SMTP_MESSAGE="${SMTP_MESSAGE:-$SMTP_MESSAGE_DEFAULT}"
 
 truncate -s 0 "${MAIL_CONF_PATH}"
 
@@ -33,7 +35,7 @@ fi
 grep -q 'contact.mail' /etc/munin/munin.conf; rc=$?
 if  [ $rc -ne 0 -a -n "${ALERT_RECIPIENT}" -a -n "${ALERT_SENDER}" ] ; then
   echo "Setup alert email from ${ALERT_SENDER} to ${ALERT_RECIPIENT}"
-  echo 'contact.mail.command mail -r '${ALERT_SENDER}' -s "[${var:group};${var:host}] -> ${var:graph_title} -> warnings: ${loop<,>:wfields  ${var:label}=${var:value}} / criticals: ${loop<,>:cfields  ${var:label}=${var:value}}"' ${ALERT_RECIPIENT} >> /etc/munin/munin.conf
+  echo "contact.mail.command mail -r ${ALERT_SENDER} -s ${SMTP_MESSAGE} ${ALERT_RECIPIENT}" >> /etc/munin/munin.conf
   if [ "${SMTP_ALWAYS_SEND}" = true ] ; then
     echo 'contact.mail.always_send warning critical' >> /etc/munin/munin.conf
   fi
