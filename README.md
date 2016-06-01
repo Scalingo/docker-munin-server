@@ -67,6 +67,7 @@ docker run -d \
   -e SMTP_PASSWORD=smtp-password \
   -e SMTP_USE_TLS=false \
   -e SMTP_ALWAYS_SEND=true \
+  -e SMTP_MESSAGE='[${var:group};${var:host}] -> ${var:graph_title} -> warnings: ${loop<,>:wfields  ${var:label}=${var:value}} / criticals: ${loop<,>:cfields  ${var:label}=${var:value}}' \
   -e ALERT_RECIPIENT=monitoring@example.com \
   -e ALERT_SENDER=alerts@example.com \
   -e NODES="server1:10.0.0.1 server2:10.0.0.2" \
