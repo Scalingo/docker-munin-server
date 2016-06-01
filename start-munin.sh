@@ -35,7 +35,7 @@ fi
 grep -q 'contact.mail' /etc/munin/munin.conf; rc=$?
 if  [ $rc -ne 0 -a -n "${ALERT_RECIPIENT}" -a -n "${ALERT_SENDER}" ] ; then
   echo "Setup alert email from ${ALERT_SENDER} to ${ALERT_RECIPIENT}"
-echo "contact.mail.command mail -r ${ALERT_SENDER} -s \'${SMTP_MESSAGE}\' ${ALERT_RECIPIENT}" >> /etc/munin/munin.conf
+  echo "contact.mail.command mail -r ${ALERT_SENDER} -s '${SMTP_MESSAGE}' ${ALERT_RECIPIENT}" >> /etc/munin/munin.conf
   if [ "${SMTP_ALWAYS_SEND}" = true ] ; then
     echo 'contact.mail.always_send warning critical' >> /etc/munin/munin.conf
   fi
