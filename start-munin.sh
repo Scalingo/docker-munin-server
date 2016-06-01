@@ -4,13 +4,19 @@ SNMP_NODES=${SNMP_NODES:-}
 MUNIN_USER=${MUNIN_USER:-user}
 MUNIN_PASSWORD=${MUNIN_PASSWORD:-password}
 MAIL_CONF_PATH='/var/lib/munin/.mailrc'
+SMTP_USE_TLS=false
 
 truncate -s 0 "${MAIL_CONF_PATH}"
 
-if [ -n "${SMTP_HOST}" -a -n "${SMTP_PORT}" ] ; then
+if [ "${SMTP_USE_TLS}" = true ] ; then
   cat >> "${MAIL_CONF_PATH}" <<EOF
 set smtp-use-starttls
 set ssl-verify=ignore
+EOF
+fi
+
+if [ -n "${SMTP_HOST}" -a -n "${SMTP_PORT}" ] ; then
+  cat >> "${MAIL_CONF_PATH}" <<EOF
 set smtp=smtp://${SMTP_HOST}:${SMTP_PORT}
 EOF
 fi
