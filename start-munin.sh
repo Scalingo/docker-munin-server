@@ -11,6 +11,12 @@ SMTP_MESSAGE="${SMTP_MESSAGE:-$SMTP_MESSAGE_DEFAULT}"
 
 truncate -s 0 "${MAIL_CONF_PATH}"
 
+# set volume ownerships
+chown -R munin:munin /var/log/munin
+chown -R munin:munin /var/lib/munin
+chown -R munin:munin /var/run/munin
+chown -R munin:munin /var/cache/munin
+
 if [ "${SMTP_USE_TLS}" = true ] ; then
   cat >> "${MAIL_CONF_PATH}" <<EOF
 set smtp-use-starttls
