@@ -1,16 +1,25 @@
 server {
   listen 8080 default_server;
   server_name munin;
+
   access_log /var/log/nginx/munin-access.log;
   error_log /var/log/nginx/munin-server.log;
+
+  auth_basic "Munin Server";
+  auth_basic_user_file "/etc/munin/htpasswd.users";
 
   location /munin {
     root /var/cache/munin/www;
   }
 
+  location ^~ /munin-cgi/munin-cgi-graph/ {
+    fastcgi_split_path_info ^(/munin-cgi/munin-cgi-graph)(.*);
+    fastcgi_param PATH_INFO $fastcgi_path_info;
+    fastcgi_pass unix:/var/run/munin/fcgi-graph.sock;
+    include fastcgi_params;
+  }
+
   location / {
-    auth_basic "Munin Server";
-    auth_basic_user_file "/etc/munin/htpasswd.users";
     root "/var/cache/munin/www";
   }
 }

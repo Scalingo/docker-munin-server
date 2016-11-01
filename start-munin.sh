@@ -114,6 +114,8 @@ fi
 /usr/sbin/munin-node
 echo "Using the following munin nodes:"
 echo $NODES
+# start spawn-cgi to enable CGI interface with munin (dynamix graph generation)
+spawn-fcgi -s /var/run/munin/fcgi-graph.sock -U munin -u munin -g munin /usr/lib/munin/cgi/munin-cgi-graph
 # start nginx
 /usr/sbin/nginx
 # show logs
