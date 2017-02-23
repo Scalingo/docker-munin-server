@@ -6,10 +6,10 @@ All the configuration is done through the environment.
 
 ### HTTP Credentials 
 
-These are the credentials used to authenticate the HTTP dashboard
+These are the credentials used to authenticate the HTTP dashboard; both take a space-delimited list
 
-* `MUNIN_USER`
-* `MUNIN_PASSWORD`
+* `MUNIN_USERS`
+* `MUNIN_PASSWORDS`
 
 ### SMTP info for alerts
 
@@ -60,8 +60,8 @@ docker run -d \
   -v /var/lib/munin:/var/lib/munin \
   -v /var/run/munin:/var/run/munin \
   -v /var/cache/munin:/var/cache/munin \
-  -e MUNIN_USER=http-user \
-  -e MUNIN_PASSWORD=secret-password \
+  -e MUNIN_USERS=http-user another-user \
+  -e MUNIN_PASSWORDS=secret-password other-users-password \
   -e SMTP_HOST=smtp.example.com \
   -e SMTP_PORT=587 \
   -e SMTP_USERNAME=smtp-username \
