@@ -60,8 +60,8 @@ docker run -d \
   -v /var/lib/munin:/var/lib/munin \
   -v /var/run/munin:/var/run/munin \
   -v /var/cache/munin:/var/cache/munin \
-  -e MUNIN_USERS=http-user another-user \
-  -e MUNIN_PASSWORDS=secret-password other-users-password \
+  -e MUNIN_USERS='http-user another-user' \
+  -e MUNIN_PASSWORDS='secret-password other-users-password' \
   -e SMTP_HOST=smtp.example.com \
   -e SMTP_PORT=587 \
   -e SMTP_USERNAME=smtp-username \
