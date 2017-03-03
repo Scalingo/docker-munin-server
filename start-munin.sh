@@ -1,8 +1,8 @@
 #!/bin/bash
 NODES=${NODES:-}
 SNMP_NODES=${SNMP_NODES:-}
-MUNIN_USER=${MUNIN_USER:-user}
-MUNIN_PASSWORD=${MUNIN_PASSWORD:-password}
+MUNIN_USERS=${MUNIN_USERS:-${MUNIN_USER:-user}}
+MUNIN_PASSWORDS=${MUNIN_PASSWORDS:-${MUNIN_PASSWORD:-password}}
 MAIL_CONF_PATH='/var/lib/munin/.mailrc'
 SMTP_USE_TLS=${SMTP_USE_TLS:-false}
 SMTP_ALWAYS_SEND=${SMTP_ALWAYS_SEND:-true}
@@ -47,7 +47,16 @@ if  [ $rc -ne 0 -a -n "${ALERT_RECIPIENT}" -a -n "${ALERT_SENDER}" ] ; then
   fi
 fi
 
-[ -e /etc/munin/htpasswd.users ] || htpasswd -b -c /etc/munin/htpasswd.users "$MUNIN_USER" "$MUNIN_PASSWORD"
+# generate the Munin auth username/password file
+if [ ! -f /etc/munin/htpasswd.users ]; then
+  uc = 0
+  IFS=' ' read -ra ARR_USERS <<< "$MUNIN_USERS"
+  IFS=' ' read -ra ARR_PASSWORDS <<< "$MUNIN_PASSWORDS"
+  for u in "${ARR_USERS[@]}"; do
+    printf "${u}:`openssl passwd -apr1 ${ARR_PASSWORDS[uc]}`\n" >> /etc/munin/htpasswd.users
+    (( uc++ ))
+  done
+fi
 
 # generate node list
 for NODE in $NODES
