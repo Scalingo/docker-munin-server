@@ -12,7 +12,7 @@ VOLUME /var/lib/munin
 VOLUME /var/log/munin
 
 ADD ./munin.conf /etc/munin/munin.conf
-AdD ./nginx.conf /etc/nginx/nginx.conf
+ADD ./nginx.conf /etc/nginx/nginx.conf
 ADD ./nginx-munin /etc/nginx/sites-enabled/munin
 ADD ./start-munin.sh /munin
 ADD ./munin-graph-logging.patch /usr/share/munin

@@ -49,7 +49,7 @@ fi
 
 # generate the Munin auth username/password file
 if [ ! -f /etc/munin/htpasswd.users ]; then
-  uc = 0
+  uc=0
   IFS=' ' read -ra ARR_USERS <<< "$MUNIN_USERS"
   IFS=' ' read -ra ARR_PASSWORDS <<< "$MUNIN_PASSWORDS"
   for u in "${ARR_USERS[@]}"; do
@@ -67,7 +67,7 @@ do
   if [ ${#PORT} -eq 0 ]; then
       PORT=4949
   fi
-  if ! grep -q $HOST /etc/munin/munin.conf ; then
+  if ! grep -q "'^$HOST$'" /etc/munin/munin.conf ; then
     cat << EOF >> /etc/munin/munin.conf
 [$NAME]
     address $HOST
@@ -75,6 +75,7 @@ do
     port $PORT
 
 EOF
+    echo "Added node '$NAME' '$HOST'"
     fi
 done
 
@@ -87,7 +88,7 @@ do
   if [ ${#PORT} -eq 0 ]; then
       PORT=4949
   fi
-  if ! grep -q $HOST /etc/munin/munin.conf ; then
+  if ! grep -q "'^$HOST$'" /etc/munin/munin.conf ; then
     cat << EOF >> /etc/munin/munin.conf
 [$NAME]
     address $HOST
@@ -95,6 +96,7 @@ do
     port $PORT
 
 EOF
+    echo "Added SNMP node '$NAME' '$HOST'"
     fi
 done
 
@@ -119,16 +121,20 @@ fi
 /usr/sbin/rsyslogd
 # start cron
 /usr/sbin/cron
+# Issue: 'NUMBER OF HARD LINKS > 1' prevents cron exec in container
+# https://github.com/phusion/baseimage-docker/issues/198
+touch /etc/crontab /etc/cron.d/*
 # start local munin-node
 /usr/sbin/munin-node
 echo "Using the following munin nodes:"
 echo $NODES
+echo "(snmp) $SNMP_NODES"
 # start spawn-cgi to enable CGI interface with munin (dynamix graph generation)
 spawn-fcgi -s /var/run/munin/fcgi-graph.sock -U munin -u munin -g munin /usr/lib/munin/cgi/munin-cgi-graph
 # start nginx
 /usr/sbin/nginx
 # show logs
-echo "Tailing /var/log/syslog..."
+echo "Tailing syslog and munin-update log..."
 tail -F /var/log/syslog /var/log/munin/munin-update.log & pid=$!
 echo "tail -F running in $pid"
 
