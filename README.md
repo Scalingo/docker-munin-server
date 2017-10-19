@@ -36,6 +36,7 @@ The port is always optional, default is 4949
 
 * `NODES` format: `name1:ip1[:port1] name2:ip2[:port2] …`
 * `SNMP_NODES` format: `name1:ip1[:port1]` …
+* `SSH_NODES` format: `name1:ip1[:port1]` …
 
 ## Port
 
