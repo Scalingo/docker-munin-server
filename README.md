@@ -77,6 +77,8 @@ docker run -d \
   munin-server
 ```
 
+A simple `run-image` example is provided which assumes `munin.conf` contains environment variable values, or copied from a local Munin server instance.
+
 You can now reach your munin-server on port 8080 of your host. It will display at the first run:
 
 ```
