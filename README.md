@@ -55,6 +55,9 @@ For a bit of persistency
 
 ```
 docker build -t munin-server .
+
+# docker build --network=host -t munin-server .
+
 docker run -d \
   -p 8080:8080 \
   -v /var/log/munin:/var/log/munin \
