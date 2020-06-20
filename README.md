@@ -55,6 +55,9 @@ For a bit of persistency
 
 ```
 docker build -t munin-server .
+
+# docker build --network=host -t munin-server .
+
 docker run -d \
   -p 8080:8080 \
   -v /var/log/munin:/var/log/munin \
@@ -76,6 +79,8 @@ docker run -d \
   -e SNMP_NODES="router1:10.0.0.254:9999" \
   munin-server
 ```
+
+A simple `run-image` example is provided which assumes `munin.conf` contains environment variable values, or copied from a local Munin server instance.
 
 You can now reach your munin-server on port 8080 of your host. It will display at the first run:
 

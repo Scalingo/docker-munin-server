@@ -1,0 +1,8 @@
+docker run -d --name=munin --net=host \
+  -v /var/log/munin:/var/log/munin \
+  -v /var/lib/munin:/var/lib/munin \
+  -v /var/run/munin:/var/run/munin \
+  -v /var/cache/munin:/var/cache/munin \
+  -e MUNIN_USERS='munin' \
+  -e MUNIN_PASSWORDS='munin' \
+  munin-server
